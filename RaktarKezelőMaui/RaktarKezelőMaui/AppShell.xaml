@@ -3,13 +3,25 @@
     x:Class="RaktarKezelőMaui.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:RaktarKezelőMaui"
+    xmlns:local="clr-namespace:RaktarKezelőMaui.View"
     Shell.FlyoutBehavior="Flyout"
     Title="RaktarKezelőMaui">
 
     <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        Title="Statistics"
+        ContentTemplate="{DataTemplate local:MainPageStatistics}"
+        Route="MainPageStatistics" />
+    <ShellContent
+    Title="Products"
+    ContentTemplate="{DataTemplate local:ProductPage}"
+    Route="ProductPage" />
+    <ShellContent
+    Title="Categories"
+    ContentTemplate="{DataTemplate local:CategoryPage}"
+    Route="CategoryPage" />
+    <ShellContent
+    Title="Orders"
+    ContentTemplate="{DataTemplate local:OrderPage}"
+    Route="OrderPage" />
 
 </Shell>

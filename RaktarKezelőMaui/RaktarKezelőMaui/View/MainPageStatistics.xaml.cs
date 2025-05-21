@@ -1,10 +1,10 @@
-﻿namespace RaktarKezelőMaui
+﻿namespace RaktarKezelőMaui.View
 {
-    public partial class MainPage : ContentPage
+    public partial class MainPageStatistics : ContentPage
     {
         int count = 0;
 
-        public MainPage()
+        public MainPageStatistics()
         {
             InitializeComponent();
         }
