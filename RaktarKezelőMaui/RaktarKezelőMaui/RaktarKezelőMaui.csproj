@@ -63,4 +63,31 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Compile Update="View\MainPageStatistics.xaml.cs">
+	    <DependentUpon>MainPageStatistics.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="View\CategoryPage.xaml.cs">
+	    <DependentUpon>CategoryPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="View\ProductPage.xaml.cs">
+	    <DependentUpon>ProductPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="View\OrderPage.xaml.cs">
+	    <DependentUpon>OrderPage.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="View\OrderPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\CategoryPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\ProductPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
 </Project>
