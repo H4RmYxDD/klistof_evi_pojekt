@@ -1,12 +1,29 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="RaktarKezelőMaui.View.CategoryPage"
-             Title="NewPage2">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="Category Editor">
+
+    <Grid ColumnDefinitions="2*,3*" RowDefinitions="Auto,*">
+        <!-- Kategórialista -->
+        <CollectionView x:Name="CategoryList"
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        SelectionMode="Single"
+                        SelectionChanged="OnCategorySelected">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Label Text="{Binding Name}" Padding="10"/>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Kategória szerkesztő -->
+        <StackLayout Grid.Row="1" Grid.Column="1" Padding="10" Spacing="10">
+            <Entry x:Name="CategoryNameEntry" Placeholder="Kategória neve"/>
+
+            <Button Text="Hozzáadás" BackgroundColor="Green" TextColor="White" Clicked="OnAddClicked"/>
+            <Button Text="Mentés módosítás" BackgroundColor="Orange" TextColor="White" Clicked="OnSaveClicked"/>
+            <Button Text="Törlés" BackgroundColor="Red" TextColor="White" Clicked="OnDeleteClicked"/>
+        </StackLayout>
+    </Grid>
 </ContentPage>
