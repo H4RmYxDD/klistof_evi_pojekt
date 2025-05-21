@@ -48,6 +48,8 @@ namespace RaktarKezelőMaui.View
                 BuyingDatePicker.Date = selectedPurchase.BuyingTime;
                 StatusPicker.SelectedItem = selectedPurchase.PurchaseStatus.ToString();
                 ProductInPurchaseList.ItemsSource = selectedPurchase.PurchaseProducts;
+
+                this.BindingContext = selectedPurchase;
             }
         }
 
@@ -117,7 +119,8 @@ namespace RaktarKezelőMaui.View
                 BuyerName = buyerName,
                 BuyingTime = date,
                 PurchaseStatus = status,
-                PurchaseProducts = new List<PurchaseProduct>()
+                PurchaseProducts = new List<PurchaseProduct>(),
+                TotalPrice = selectedProduct.PriceHuf * quantity
             };
 
             var purchaseProduct = new PurchaseProduct
@@ -134,6 +137,11 @@ namespace RaktarKezelőMaui.View
             db.SaveChanges();
 
             purchases.Add(newPurchase);
+
+            // Calculate and display the total price
+            double totalPrice = selectedProduct.PriceHuf * quantity;
+            DisplayAlert("Rendelés ára", $"A rendelés teljes ára: {totalPrice:N0} Ft", "OK");
+
             ClearForm();
         }
 
@@ -146,6 +154,7 @@ namespace RaktarKezelőMaui.View
             BuyingDatePicker.Date = DateTime.Today;
             ProductInPurchaseList.ItemsSource = null;
             selectedPurchase = null;
+            this.BindingContext = null; 
         }
     }
 }

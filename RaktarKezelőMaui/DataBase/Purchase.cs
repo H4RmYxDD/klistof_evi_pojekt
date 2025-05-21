@@ -13,7 +13,8 @@ namespace DataBase
         public List<PurchaseProduct> PurchaseProducts { get; set; } = new();
         public string BuyerName { get; set; }
         public DateTime BuyingTime { get; set; }
-        public Status PurchaseStatus { get; set; } 
+        public Status PurchaseStatus { get; set; }
+        public double TotalPrice { get; set; }
 
         public enum Status
         {

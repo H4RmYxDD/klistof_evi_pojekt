@@ -14,8 +14,9 @@
                 <DataTemplate>
                     <StackLayout Padding="5">
                         <Label Text="{Binding BuyerName}" FontAttributes="Bold"/>
-                        <Label Text="{Binding BuyingTime, StringFormat='d'}" FontSize="Small"/>
+                        <Label Text="{Binding BuyingTime, StringFormat='{}{0:yyyy.MM.dd}'}" FontSize="Small"/>
                         <Label Text="{Binding PurchaseStatus}" FontSize="Small"/>
+                        <Label Text="{Binding TotalPrice, StringFormat='{}{0:N0} Ft'}" FontSize="Small"/>
                     </StackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
@@ -48,6 +49,8 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
+                <Label Text="Összár:" FontAttributes="Bold"/>
+                <Label Text="{Binding TotalPrice, StringFormat='{}{0:N0} Ft'}" FontSize="Medium" FontAttributes="Bold"/>
 
                 <!-- Új rendelés hozzáadása -->
                 <BoxView HeightRequest="1" Color="Gray"/>

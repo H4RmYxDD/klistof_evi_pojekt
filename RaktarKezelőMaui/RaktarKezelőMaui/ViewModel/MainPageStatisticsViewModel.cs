@@ -27,10 +27,9 @@ namespace RaktarKezelõMaui.ViewModel
         private void LoadStats(ApplicationDbContext dbContext)
         {
             var purchases = dbContext.Purchases
-                .Include(p => p.Products)
                 .ToList();
 
-            // Napi bontás
+            // Napi bontás (Daily)
             var daily = purchases
                 .GroupBy(p => p.BuyingTime.Date)
                 .OrderByDescending(g => g.Key)
@@ -38,13 +37,14 @@ namespace RaktarKezelõMaui.ViewModel
                 {
                     Period = g.Key.ToString("yyyy-MM-dd"),
                     Count = g.Count(),
-                    TotalValue = g.Sum(p => p.Products.Sum(prod => prod.PriceHuf * prod.Quantity))
+                    TotalValue = g.Sum(p => p.TotalPrice)
                 });
+
             DailyStats.Clear();
             foreach (var stat in daily)
                 DailyStats.Add(stat);
 
-            // Havi bontás
+            // Havi bontás (Monthly)
             var monthly = purchases
                 .GroupBy(p => new { p.BuyingTime.Year, p.BuyingTime.Month })
                 .OrderByDescending(g => g.Key.Year).ThenByDescending(g => g.Key.Month)
@@ -52,13 +52,14 @@ namespace RaktarKezelõMaui.ViewModel
                 {
                     Period = $"{g.Key.Year}-{g.Key.Month:00}",
                     Count = g.Count(),
-                    TotalValue = g.Sum(p => p.Products.Sum(prod => prod.PriceHuf * prod.Quantity))
+                    TotalValue = g.Sum(p => p.TotalPrice)
                 });
+
             MonthlyStats.Clear();
             foreach (var stat in monthly)
                 MonthlyStats.Add(stat);
 
-            // Éves bontás
+            // Éves bontás (Yearly)
             var yearly = purchases
                 .GroupBy(p => p.BuyingTime.Year)
                 .OrderByDescending(g => g.Key)
@@ -66,8 +67,9 @@ namespace RaktarKezelõMaui.ViewModel
                 {
                     Period = g.Key.ToString(),
                     Count = g.Count(),
-                    TotalValue = g.Sum(p => p.Products.Sum(prod => prod.PriceHuf * prod.Quantity))
+                    TotalValue = g.Sum(p => p.TotalPrice)
                 });
+
             YearlyStats.Clear();
             foreach (var stat in yearly)
                 YearlyStats.Add(stat);

@@ -1,6 +1,11 @@
-﻿using System;
+﻿//TODO: mukodik a rendeles, kell meg:
+//rendeles osszege (keszen van), statisztika (ez is megvan) , tobb termeket tudjon rendelni, termeket kategoriahoz tudjunk adni
+//mi a gyasz az a "d" betu a rendelesnel (megcsinaltam elvileg! puszi, balazs <3)
+
+using System;
 using DataBase;
 using Microsoft.Extensions.Logging;
+using SkiaSharp.Views.Maui.Controls.Hosting;
 
 namespace RaktarKezelőMaui
 {
@@ -21,7 +26,7 @@ namespace RaktarKezelőMaui
     		builder.Logging.AddDebug();
             builder.Services.AddDbContext<ApplicationDbContext>();
 #endif
-
+            builder.UseMauiApp<App>().UseSkiaSharp();
             return builder.Build();
         }
     }

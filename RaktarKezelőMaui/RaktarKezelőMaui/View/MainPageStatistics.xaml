@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:microcharts="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
              x:Class="RaktarKezelőMaui.View.MainPageStatistics"
              Title="Statisztika">
     <ScrollView>
@@ -48,6 +49,14 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+            <Label Text="Daily Orders" FontSize="20" HorizontalOptions="Center"/>
+            <microcharts:ChartView x:Name="dailyChartView" HeightRequest="200"/>
+            <Label Text="Monthly Orders" FontSize="20" HorizontalOptions="Center"/>
+            <microcharts:ChartView x:Name="monthlyChartView" HeightRequest="200"/>
+            <Label Text="Yearly Orders" FontSize="20" HorizontalOptions="Center"/>
+            <microcharts:ChartView x:Name="yearlyChartView" HeightRequest="200"/>
+
+            <!-- Other UI elements -->
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
