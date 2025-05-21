@@ -10,7 +10,7 @@ namespace DataBase
     {
         public int Id { get; set; }
         public List<Product> Products { get; set; }
-        public List<PurchaseProduct> PurchaseProducts { get; set; }
+        public List<PurchaseProduct> PurchaseProducts { get; set; } = new();
         public string BuyerName { get; set; }
         public DateTime BuyingTime { get; set; }
         public Status PurchaseStatus { get; set; } 

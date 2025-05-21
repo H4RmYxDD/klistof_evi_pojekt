@@ -1,8 +1,10 @@
 using DataBase;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Microsoft.Maui.Controls;
 
 namespace RaktarKezelőMaui.View
 {
@@ -11,11 +13,13 @@ namespace RaktarKezelőMaui.View
         private ObservableCollection<Purchase> purchases = new();
         private Purchase selectedPurchase;
         private ApplicationDbContext db = new();
+        private List<Product> allProducts = new();
 
         public OrderPage()
         {
             InitializeComponent();
             LoadPurchases();
+            LoadProducts();
         }
 
         private void LoadPurchases()
@@ -27,6 +31,12 @@ namespace RaktarKezelőMaui.View
 
             purchases = new ObservableCollection<Purchase>(purchaseList);
             PurchaseList.ItemsSource = purchases;
+        }
+
+        private void LoadProducts()
+        {
+            allProducts = db.Products.ToList();
+            ProductPicker.ItemsSource = allProducts.Select(p => p.Name).ToList();
         }
 
         private void OnPurchaseSelected(object sender, SelectionChangedEventArgs e)
@@ -71,8 +81,71 @@ namespace RaktarKezelőMaui.View
 
             selectedPurchase.PurchaseStatus = newStatus;
             db.SaveChanges();
-
             LoadPurchases();
+        }
+
+        private void OnAddPurchaseClicked(object sender, EventArgs e)
+        {
+            var buyerName = BuyerNameEntry.Text;
+            var date = BuyingDatePicker.Date;
+            var status = Purchase.Status.New;
+
+            if (string.IsNullOrWhiteSpace(buyerName) ||
+                ProductPicker.SelectedIndex == -1 ||
+                string.IsNullOrWhiteSpace(QuantityEntry.Text))
+            {
+                DisplayAlert("Hiba", "Tölts ki minden mezőt!", "OK");
+                return;
+            }
+
+            if (!double.TryParse(QuantityEntry.Text, out double quantity) || quantity <= 0)
+            {
+                DisplayAlert("Hiba", "Érvénytelen mennyiség.", "OK");
+                return;
+            }
+
+            var selectedProductName = ProductPicker.SelectedItem.ToString();
+            var selectedProduct = allProducts.FirstOrDefault(p => p.Name == selectedProductName);
+            if (selectedProduct == null)
+            {
+                DisplayAlert("Hiba", "Termék nem található.", "OK");
+                return;
+            }
+
+            var newPurchase = new Purchase
+            {
+                BuyerName = buyerName,
+                BuyingTime = date,
+                PurchaseStatus = status,
+                PurchaseProducts = new List<PurchaseProduct>()
+            };
+
+            var purchaseProduct = new PurchaseProduct
+            {
+                ProductId = selectedProduct.Id,
+                Quantity = quantity,
+                Product = selectedProduct,
+                Purchase = newPurchase
+            };
+
+            newPurchase.PurchaseProducts.Add(purchaseProduct);
+
+            db.Purchases.Add(newPurchase);
+            db.SaveChanges();
+
+            purchases.Add(newPurchase);
+            ClearForm();
+        }
+
+        private void ClearForm()
+        {
+            BuyerNameEntry.Text = "";
+            QuantityEntry.Text = "";
+            ProductPicker.SelectedIndex = -1;
+            StatusPicker.SelectedIndex = -1;
+            BuyingDatePicker.Date = DateTime.Today;
+            ProductInPurchaseList.ItemsSource = null;
+            selectedPurchase = null;
         }
     }
 }

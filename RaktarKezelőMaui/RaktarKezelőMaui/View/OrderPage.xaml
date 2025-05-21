@@ -4,7 +4,7 @@
              Title="Orders">
 
     <Grid ColumnDefinitions="2*,3*" RowDefinitions="Auto,*">
-        <!-- Vásárlás lista -->
+        <!-- Rendelések listája -->
         <CollectionView x:Name="PurchaseList"
                         Grid.Row="1"
                         Grid.Column="0"
@@ -21,34 +21,45 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-        <!-- Vásárlás részletei -->
-        <StackLayout Grid.Row="1" Grid.Column="1" Padding="10" Spacing="10">
-            <Entry x:Name="BuyerNameEntry" Placeholder="Vásárló neve" />
-            <DatePicker x:Name="BuyingDatePicker" />
+        <!-- Rendelés részletei -->
+        <ScrollView Grid.Row="1" Grid.Column="1">
+            <StackLayout Padding="10" Spacing="10">
+                <Entry x:Name="BuyerNameEntry" Placeholder="Vásárló neve" />
+                <DatePicker x:Name="BuyingDatePicker" />
 
-            <Picker x:Name="StatusPicker" Title="Státusz">
-                <Picker.ItemsSource>
-                    <x:Array Type="{x:Type x:String}">
-                        <x:String>New</x:String>
-                        <x:String>Delivered</x:String>
-                        <x:String>Canceled</x:String>
-                    </x:Array>
-                </Picker.ItemsSource>
-            </Picker>
+                <Picker x:Name="StatusPicker" Title="Státusz">
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>New</x:String>
+                            <x:String>Delivered</x:String>
+                            <x:String>Canceled</x:String>
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
 
-            <Label Text="Termékek a vásárlásban:" FontAttributes="Bold"/>
-            <CollectionView x:Name="ProductInPurchaseList">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <StackLayout Orientation="Horizontal" Spacing="10">
-                            <Label Text="{Binding Product.Name}" />
-                            <Label Text="{Binding Quantity}" />
-                        </StackLayout>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                <Label Text="Termékek a vásárlásban:" FontAttributes="Bold"/>
+                <CollectionView x:Name="ProductInPurchaseList">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout Orientation="Horizontal" Spacing="10">
+                                <Label Text="{Binding Product.Name}" />
+                                <Label Text="{Binding Quantity}" />
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
 
-            <Button Text="Státusz mentése" BackgroundColor="Green" TextColor="White" Clicked="OnChangeStatusClicked"/>
-        </StackLayout>
+                <!-- Új rendelés hozzáadása -->
+                <BoxView HeightRequest="1" Color="Gray"/>
+                <Label Text="Új rendelés hozzáadása" FontAttributes="Bold"/>
+
+                <Picker x:Name="ProductPicker" Title="Válassz terméket"/>
+                <Entry x:Name="QuantityEntry" Placeholder="Mennyiség" Keyboard="Numeric"/>
+
+                <Button Text="Új rendelés mentése" BackgroundColor="Green" TextColor="White" Clicked="OnAddPurchaseClicked"/>
+
+                <Button Text="Státusz mentése" BackgroundColor="DarkOrange" TextColor="White" Clicked="OnChangeStatusClicked"/>
+            </StackLayout>
+        </ScrollView>
     </Grid>
 </ContentPage>
