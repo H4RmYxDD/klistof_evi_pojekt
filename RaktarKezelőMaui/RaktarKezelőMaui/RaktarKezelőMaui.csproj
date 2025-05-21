@@ -71,6 +71,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\DataBase\DataBase.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Compile Update="View\MainPageStatistics.xaml.cs">
 	    <DependentUpon>MainPageStatistics.xaml</DependentUpon>
 	  </Compile>

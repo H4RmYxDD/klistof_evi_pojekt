@@ -1,12 +1,42 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="RaktarKezelőMaui.View.ProductPage"
-             Title="NewPage3">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="Product Editor">
+
+    <Grid ColumnDefinitions="2*,3*" RowDefinitions="Auto,*">
+        <!-- Terméklista -->
+        <CollectionView x:Name="ProductList"
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        SelectionMode="Single"
+                        SelectionChanged="OnProductSelected">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Label Text="{Binding Name}" Padding="10"/>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Termékszerkesztő -->
+        <StackLayout Grid.Row="1" Grid.Column="1" Padding="10" Spacing="10">
+            <Entry x:Name="NameEntry" Placeholder="Terméknév"/>
+            <Entry x:Name="PriceHufEntry" Placeholder="Ár (HUF)" Keyboard="Numeric"/>
+            <Entry x:Name="PriceEurEntry" Placeholder="Ár (EUR)" Keyboard="Numeric"/>
+            <Entry x:Name="QuantityEntry" Placeholder="Mennyiség" Keyboard="Numeric"/>
+            <Picker x:Name="MeasureUnitPicker" Title="Mértékegység">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Piece</x:String>
+                        <x:String>Kilogram</x:String>
+                        <x:String>Liter</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+
+            <!-- Két külön gomb -->
+            <Button Text="Hozzáadás" BackgroundColor="Green" TextColor="White" Clicked="OnAddClicked"/>
+            <Button Text="Mentés módosítás" BackgroundColor="Orange" TextColor="White" Clicked="OnSaveClicked"/>
+            <Button Text="Törlés" BackgroundColor="Red" TextColor="White" Clicked="OnDeleteClicked"/>
+        </StackLayout>
+    </Grid>
 </ContentPage>
