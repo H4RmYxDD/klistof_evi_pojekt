@@ -134,6 +134,9 @@ namespace DataBase.Migrations
                     b.Property<int>("PurchaseId")
                         .HasColumnType("int");
 
+                    b.Property<double>("Quantity")
+                        .HasColumnType("float");
+
                     b.HasKey("ProductId", "PurchaseId");
 
                     b.HasIndex("PurchaseId");
@@ -191,7 +194,7 @@ namespace DataBase.Migrations
                         .IsRequired();
 
                     b.HasOne("DataBase.Purchase", "Purchase")
-                        .WithMany()
+                        .WithMany("PurchaseProducts")
                         .HasForeignKey("PurchaseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -204,6 +207,8 @@ namespace DataBase.Migrations
             modelBuilder.Entity("DataBase.Purchase", b =>
                 {
                     b.Navigation("Products");
+
+                    b.Navigation("PurchaseProducts");
                 });
 #pragma warning restore 612, 618
         }

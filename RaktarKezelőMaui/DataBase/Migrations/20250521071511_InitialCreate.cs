@@ -115,7 +115,8 @@ namespace DataBase.Migrations
                 columns: table => new
                 {
                     PurchaseId = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false)
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {

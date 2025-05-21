@@ -1,12 +1,54 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="RaktarKezelőMaui.View.OrderPage"
-             Title="NewPage1">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="Orders">
+
+    <Grid ColumnDefinitions="2*,3*" RowDefinitions="Auto,*">
+        <!-- Vásárlás lista -->
+        <CollectionView x:Name="PurchaseList"
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        SelectionMode="Single"
+                        SelectionChanged="OnPurchaseSelected">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Padding="5">
+                        <Label Text="{Binding BuyerName}" FontAttributes="Bold"/>
+                        <Label Text="{Binding BuyingTime, StringFormat='d'}" FontSize="Small"/>
+                        <Label Text="{Binding PurchaseStatus}" FontSize="Small"/>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Vásárlás részletei -->
+        <StackLayout Grid.Row="1" Grid.Column="1" Padding="10" Spacing="10">
+            <Entry x:Name="BuyerNameEntry" Placeholder="Vásárló neve" />
+            <DatePicker x:Name="BuyingDatePicker" />
+
+            <Picker x:Name="StatusPicker" Title="Státusz">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>New</x:String>
+                        <x:String>Delivered</x:String>
+                        <x:String>Canceled</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+
+            <Label Text="Termékek a vásárlásban:" FontAttributes="Bold"/>
+            <CollectionView x:Name="ProductInPurchaseList">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Orientation="Horizontal" Spacing="10">
+                            <Label Text="{Binding Product.Name}" />
+                            <Label Text="{Binding Quantity}" />
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button Text="Státusz mentése" BackgroundColor="Green" TextColor="White" Clicked="OnChangeStatusClicked"/>
+        </StackLayout>
+    </Grid>
 </ContentPage>

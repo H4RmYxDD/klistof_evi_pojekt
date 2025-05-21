@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataBase.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250521063121_InitialCreate")]
+    [Migration("20250521071511_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -137,6 +137,9 @@ namespace DataBase.Migrations
                     b.Property<int>("PurchaseId")
                         .HasColumnType("int");
 
+                    b.Property<double>("Quantity")
+                        .HasColumnType("float");
+
                     b.HasKey("ProductId", "PurchaseId");
 
                     b.HasIndex("PurchaseId");
@@ -194,7 +197,7 @@ namespace DataBase.Migrations
                         .IsRequired();
 
                     b.HasOne("DataBase.Purchase", "Purchase")
-                        .WithMany()
+                        .WithMany("PurchaseProducts")
                         .HasForeignKey("PurchaseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -207,6 +210,8 @@ namespace DataBase.Migrations
             modelBuilder.Entity("DataBase.Purchase", b =>
                 {
                     b.Navigation("Products");
+
+                    b.Navigation("PurchaseProducts");
                 });
 #pragma warning restore 612, 618
         }
