@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System;
+using DataBase;
+using Microsoft.Extensions.Logging;
 
 namespace RaktarKezelőMaui
 {
@@ -17,6 +19,7 @@ namespace RaktarKezelőMaui
 
 #if DEBUG
     		builder.Logging.AddDebug();
+            builder.Services.AddDbContext<ApplicationDbContext>();
 #endif
 
             return builder.Build();
