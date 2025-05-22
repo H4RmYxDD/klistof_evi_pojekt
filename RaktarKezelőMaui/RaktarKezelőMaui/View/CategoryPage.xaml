@@ -21,9 +21,23 @@
         <StackLayout Grid.Row="1" Grid.Column="1" Padding="10" Spacing="10">
             <Entry x:Name="CategoryNameEntry" Placeholder="Kategória neve"/>
 
-            <Button Text="Hozzáadás" BackgroundColor="Green" TextColor="White" Clicked="OnAddClicked"/>
+            <Picker x:Name="ProductPicker" Title="Termék kiválasztása"/>
+            <Button Text="Termék hozzáadása" BackgroundColor="Green" TextColor="White" Clicked="OnAddProductToCategory"/>
+
+            <CollectionView x:Name="ProductsInCategoryList" HeightRequest="150">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Orientation="Horizontal" Spacing="10">
+                            <Label Text="{Binding Name}" VerticalOptions="Center"/>
+                            <Button Text="Törlés" BackgroundColor="Red" TextColor="White" Clicked="OnRemoveProductFromCategory"/>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button Text="Hozzáadás" BackgroundColor="Green" TextColor="White" Clicked="OnAddProductToCategory"/>
             <Button Text="Mentés módosítás" BackgroundColor="Orange" TextColor="White" Clicked="OnSaveClicked"/>
-            <Button Text="Törlés" BackgroundColor="Red" TextColor="White" Clicked="OnDeleteClicked"/>
+            <Button Text="Törlés" BackgroundColor="Red" TextColor="White" Clicked="OnRemoveProductFromCategory"/>
         </StackLayout>
     </Grid>
 </ContentPage>

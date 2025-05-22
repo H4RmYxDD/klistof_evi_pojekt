@@ -11,6 +11,7 @@ namespace RaktarKezelőMaui.View
     public partial class OrderPage : ContentPage
     {
         private ObservableCollection<Purchase> purchases = new();
+        private ObservableCollection<PurchaseProduct> newPurchaseProducts = new();
         private Purchase selectedPurchase;
         private ApplicationDbContext db = new();
         private List<Product> allProducts = new();
@@ -86,17 +87,11 @@ namespace RaktarKezelőMaui.View
             LoadPurchases();
         }
 
-        private void OnAddPurchaseClicked(object sender, EventArgs e)
+        private void OnAddProductToNewOrder(object sender, EventArgs e)
         {
-            var buyerName = BuyerNameEntry.Text;
-            var date = BuyingDatePicker.Date;
-            var status = Purchase.Status.New;
-
-            if (string.IsNullOrWhiteSpace(buyerName) ||
-                ProductPicker.SelectedIndex == -1 ||
-                string.IsNullOrWhiteSpace(QuantityEntry.Text))
+            if (ProductPicker.SelectedIndex == -1 || string.IsNullOrWhiteSpace(QuantityEntry.Text))
             {
-                DisplayAlert("Hiba", "Tölts ki minden mezőt!", "OK");
+                DisplayAlert("Hiba", "Válassz terméket és add meg a mennyiséget!", "OK");
                 return;
             }
 
@@ -114,33 +109,52 @@ namespace RaktarKezelőMaui.View
                 return;
             }
 
+            var existing = newPurchaseProducts.FirstOrDefault(p => p.ProductId == selectedProduct.Id);
+            if (existing != null)
+            {
+                existing.Quantity += quantity;
+            }
+            else
+            {
+                newPurchaseProducts.Add(new PurchaseProduct
+                {
+                    ProductId = selectedProduct.Id,
+                    Product = selectedProduct,
+                    Quantity = quantity
+                });
+            }
+
+            ProductInPurchaseList.ItemsSource = null;
+            ProductInPurchaseList.ItemsSource = newPurchaseProducts;
+
+            QuantityEntry.Text = "";
+            ProductPicker.SelectedIndex = -1;
+        }
+
+        private void OnAddPurchaseClicked(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(BuyerNameEntry.Text) || newPurchaseProducts.Count == 0)
+            {
+                DisplayAlert("Hiba", "Tölts ki minden mezőt és adj hozzá legalább egy terméket!", "OK");
+                return;
+            }
+
+            double totalPrice = newPurchaseProducts.Sum(p => p.Product.PriceHuf * p.Quantity);
+
             var newPurchase = new Purchase
             {
-                BuyerName = buyerName,
-                BuyingTime = date,
-                PurchaseStatus = status,
-                PurchaseProducts = new List<PurchaseProduct>(),
-                TotalPrice = selectedProduct.PriceHuf * quantity
+                BuyerName = BuyerNameEntry.Text,
+                BuyingTime = BuyingDatePicker.Date,
+                PurchaseStatus = Purchase.Status.New,
+                PurchaseProducts = new List<PurchaseProduct>(newPurchaseProducts),
+                TotalPrice = totalPrice
             };
-
-            var purchaseProduct = new PurchaseProduct
-            {
-                ProductId = selectedProduct.Id,
-                Quantity = quantity,
-                Product = selectedProduct,
-                Purchase = newPurchase
-            };
-
-            newPurchase.PurchaseProducts.Add(purchaseProduct);
 
             db.Purchases.Add(newPurchase);
             db.SaveChanges();
 
             purchases.Add(newPurchase);
-
-            // Calculate and display the total price
-            double totalPrice = selectedProduct.PriceHuf * quantity;
-            DisplayAlert("Rendelés ára", $"A rendelés teljes ára: {totalPrice:N0} Ft", "OK");
+            DisplayAlert("Rendelés mentve", $"Összesen: {totalPrice:N0} Ft", "OK");
 
             ClearForm();
         }
@@ -154,7 +168,8 @@ namespace RaktarKezelőMaui.View
             BuyingDatePicker.Date = DateTime.Today;
             ProductInPurchaseList.ItemsSource = null;
             selectedPurchase = null;
-            this.BindingContext = null; 
+            newPurchaseProducts.Clear();
+            this.BindingContext = null;
         }
     }
 }

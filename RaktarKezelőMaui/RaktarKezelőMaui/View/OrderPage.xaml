@@ -49,18 +49,13 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-                <Label Text="Összár:" FontAttributes="Bold"/>
-                <Label Text="{Binding TotalPrice, StringFormat='{}{0:N0} Ft'}" FontSize="Medium" FontAttributes="Bold"/>
 
-                <!-- Új rendelés hozzáadása -->
-                <BoxView HeightRequest="1" Color="Gray"/>
-                <Label Text="Új rendelés hozzáadása" FontAttributes="Bold"/>
-
+                <!-- Új termék hozzáadása rendeléshez -->
                 <Picker x:Name="ProductPicker" Title="Válassz terméket"/>
                 <Entry x:Name="QuantityEntry" Placeholder="Mennyiség" Keyboard="Numeric"/>
+                <Button Text="Termék hozzáadása rendeléshez" BackgroundColor="DarkBlue" TextColor="White" Clicked="OnAddProductToNewOrder"/>
 
                 <Button Text="Új rendelés mentése" BackgroundColor="Green" TextColor="White" Clicked="OnAddPurchaseClicked"/>
-
                 <Button Text="Státusz mentése" BackgroundColor="DarkOrange" TextColor="White" Clicked="OnChangeStatusClicked"/>
             </StackLayout>
         </ScrollView>

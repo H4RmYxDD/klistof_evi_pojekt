@@ -10,7 +10,7 @@ namespace DataBase
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<Category> Categories { get; set; }
+        public List<Category> Categories { get; set; } = new();
         public double PirceEur { get; set; }
         public double PriceHuf { get; set; }
         public MeasureUnit ProductMeasureUnit { get; set; }

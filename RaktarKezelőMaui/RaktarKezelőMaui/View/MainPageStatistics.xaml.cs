@@ -1,5 +1,5 @@
 ﻿using DataBase;
-using RaktarKezelõMaui.ViewModel;
+using RaktarKezelőMaui.ViewModel;
 using Microcharts;
 using SkiaSharp;
 using System.Linq;

@@ -1,5 +1,5 @@
 ﻿//TODO: mukodik a rendeles, kell meg:
-//rendeles osszege (keszen van), statisztika (ez is megvan) , tobb termeket tudjon rendelni, termeket kategoriahoz tudjunk adni
+//rendeles osszege (keszen van), statisztika (ez is megvan) , tobb termeket tudjon rendelni pipa, termeket kategoriahoz tudjunk adni pipa
 //mi a gyasz az a "d" betu a rendelesnel (megcsinaltam elvileg! puszi, balazs <3)
 
 using System;
