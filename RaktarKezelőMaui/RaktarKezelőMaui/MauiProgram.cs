@@ -25,6 +25,8 @@ namespace RaktarKezelőMaui
 #if DEBUG
     		builder.Logging.AddDebug();
             builder.Services.AddDbContext<ApplicationDbContext>();
+            builder.Services.AddScoped<DeliveryRepository>();
+            builder.Services.AddTransient<DeliveryViewModel>();
 #endif
             builder.UseMauiApp<App>().UseSkiaSharp();
             return builder.Build();

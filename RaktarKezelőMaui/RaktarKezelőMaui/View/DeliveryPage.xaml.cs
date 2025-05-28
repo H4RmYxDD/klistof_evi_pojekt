@@ -1,3 +1,4 @@
+using DataBase;
 using RaktarKezeloMaui.Services;
 using System;
 using System.Collections.ObjectModel;
@@ -9,8 +10,8 @@ namespace RaktarKezelőMaui.View
 
         private readonly DeliveryService _apiService = new();
         private Guid _lastPackageId;
+        private ApplicationDbContext db = new();
 
-        // Add an observable collection for data binding
         public ObservableCollection<Package> Packages { get; } = new();
 
         public DeliveryPage()
