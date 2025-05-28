@@ -1,8 +1,7 @@
 ﻿using DataBase;
-using RaktarKezelőMaui.ViewModel;
 using Microcharts;
+using RaktarKezelõMaui.ViewModel;
 using SkiaSharp;
-using System.Linq;
 
 namespace RaktarKezelőMaui.View;
 

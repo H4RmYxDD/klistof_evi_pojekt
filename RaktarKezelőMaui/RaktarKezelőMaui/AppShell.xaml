@@ -23,5 +23,7 @@
     Title="Orders"
     ContentTemplate="{DataTemplate local:OrderPage}"
     Route="OrderPage" />
+    <ShellContent Title="Csomagküldés" ContentTemplate="{DataTemplate local:DeliveryPage}" />
+
 
 </Shell>
