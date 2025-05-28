@@ -1,37 +1,77 @@
 using RaktarKezeloMaui.Services;
 using System;
+using System.Collections.ObjectModel;
 
-namespace RaktarKezeloMaui.Views
+namespace RaktarKezelőMaui.View
 {
     public partial class DeliveryPage : ContentPage
     {
-        private readonly DeliveryService _deliveryService;
+
+        private readonly DeliveryService _apiService = new();
         private Guid _lastPackageId;
+
+        // Add an observable collection for data binding
+        public ObservableCollection<Package> Packages { get; } = new();
 
         public DeliveryPage()
         {
             InitializeComponent();
-            _deliveryService = new DeliveryService();
+            LoadPackages();
+        }
+
+        private async void LoadPackages()
+        {
+            try
+            {
+                var packages = await _apiService.GetPackagesAsync();
+                Packages.Clear();
+                foreach (var pkg in packages)
+                    Packages.Add(pkg);
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", ex.Message, "OK");
+            }
+        }
+
+        private async void OnDeletePackageClicked(object sender, EventArgs e)
+        {
+            if (sender is Button btn && btn.BindingContext is Package pkg)
+            {
+                try
+                {
+                    await _apiService.DeletePackageAsync(pkg.Id);
+                    Packages.Remove(pkg);
+                }
+                catch (Exception ex)
+                {
+                    await DisplayAlert("Error", ex.Message, "OK");
+                }
+            }
         }
 
         private async void OnSendPackageClicked(object sender, EventArgs e)
         {
             var package = new Package
             {
-                CustomerName = CustomerNameEntry.Text,
-                Address = AddressEntry.Text,
-                ZipCode = ZipCodeEntry.Text
+                CustomerName = CustomerNameEntry.Text ?? string.Empty,
+                Address = AddressEntry.Text ?? string.Empty,
+                ZipCode = ZipCodeEntry.Text ?? string.Empty
             };
 
             try
             {
-                var response = await _deliveryService.SendPackageAsync(package);
-                _lastPackageId = response.Id;
-                ResultLabel.Text = $"Csomag sikeresen elküldve. ID: {_lastPackageId}";
+                var result = await _apiService.SendPackageAsync(package);
+                if (result != null)
+                {
+                    _lastPackageId = result.Id;
+                    ResultLabel.Text = $"Csomag elküldve!\nID: {result.Id}\nNév: {result.CustomerName}\nCím: {result.Address}\nIrányítószám: {result.ZipCode}";
+                }
             }
             catch (Exception ex)
             {
-                ResultLabel.Text = $"Hiba: {ex.Message}";
+                await Application.Current.MainPage.DisplayAlert("Hiba", ex.Message, "OK");
+                ResultLabel.Text = "Hiba történt a csomag küldésekor.";
             }
         }
 
@@ -43,14 +83,14 @@ namespace RaktarKezeloMaui.Views
                 return;
             }
 
-            try
+            var status = await _apiService.GetStatusAsync(_lastPackageId);
+            if (status != null)
             {
-                var statusResponse = await _deliveryService.GetStatusAsync(_lastPackageId);
-                ResultLabel.Text = $"Csomag státusza: {statusResponse.Status}";
+                ResultLabel.Text = $"Csomag státusza: {status}";
             }
-            catch (Exception ex)
+            else
             {
-                ResultLabel.Text = $"Hiba: {ex.Message}";
+                ResultLabel.Text = "Hiba történt a státusz lekérdezésekor.";
             }
         }
     }

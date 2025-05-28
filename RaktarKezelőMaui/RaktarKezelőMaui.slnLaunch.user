@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "RaktarKezelőMaui\\RaktarKezelőMaui.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "DeliveryApi\\DeliveryApi.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

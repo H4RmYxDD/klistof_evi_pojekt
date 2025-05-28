@@ -1,6 +1,6 @@
 @DeliveryApi_HostAddress = http://localhost:5240
 
-GET {{DeliveryApi_HostAddress}}/weatherforecast/
+GET http://localhost:5240/api/delivery/packages
 Accept: application/json
 
 ###

@@ -1,18 +1,28 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="RaktarKezeloMaui.View.DeliveryPage"
-             Title="Csomagküldés">
-
+             x:Class="RaktarKezelőMaui.View.DeliveryPage">
     <ScrollView>
-        <VerticalStackLayout Spacing="25" Padding="30">
-            <Entry x:Name="CustomerNameEntry" Placeholder="Vásárló neve" />
-            <Entry x:Name="AddressEntry" Placeholder="Cím" />
-            <Entry x:Name="ZipCodeEntry" Placeholder="Irányítószám" />
-
-            <Button Text="Csomag küldése" Clicked="OnSendPackageClicked" />
-            <Button Text="Státusz lekérdezése" Clicked="OnGetStatusClicked" />
-
-            <Label x:Name="ResultLabel" TextColor="Black" />
-        </VerticalStackLayout>
+        <StackLayout Padding="20">
+            <Entry x:Name="CustomerNameEntry" Placeholder="Customer Name" />
+            <Entry x:Name="AddressEntry" Placeholder="Address" />
+            <Entry x:Name="ZipCodeEntry" Placeholder="Zip Code" />
+            <Button Text="Send Package" Clicked="OnSendPackageClicked" />
+            <Button Text="Get Status" Clicked="OnGetStatusClicked" />
+            <Label x:Name="ResultLabel" Text="Result will appear here" />
+            <CollectionView ItemsSource="{Binding Packages}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="{Binding CustomerName}" />
+                            <Label Text="{Binding Address}" />
+                            <Label Text="{Binding ZipCode}" />
+                            <Button Text="Delete"
+                                Clicked="OnDeletePackageClicked"
+                                BindingContext="{Binding .}" />
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
     </ScrollView>
 </ContentPage>

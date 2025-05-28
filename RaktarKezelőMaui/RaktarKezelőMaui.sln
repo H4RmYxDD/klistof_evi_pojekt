@@ -4,8 +4,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.12.35514.174
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RaktarKezelőMaui", "RaktarKezelőMaui\RaktarKezelőMaui.csproj", "{8E359880-8019-4A96-9DD0-23091A08B924}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D26BFBDA-9AD2-431E-B83E-5986C798096B} = {D26BFBDA-9AD2-431E-B83E-5986C798096B}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataBase", "DataBase\DataBase.csproj", "{6CFC702E-46A8-4705-9FBB-3E6DA79054C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeliveryApi", "DeliveryApi\DeliveryApi.csproj", "{D26BFBDA-9AD2-431E-B83E-5986C798096B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,8 +26,15 @@ Global
 		{6CFC702E-46A8-4705-9FBB-3E6DA79054C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CFC702E-46A8-4705-9FBB-3E6DA79054C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CFC702E-46A8-4705-9FBB-3E6DA79054C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D26BFBDA-9AD2-431E-B83E-5986C798096B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D26BFBDA-9AD2-431E-B83E-5986C798096B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D26BFBDA-9AD2-431E-B83E-5986C798096B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D26BFBDA-9AD2-431E-B83E-5986C798096B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F8A3CCD2-E91A-4BDC-A865-1811C898CCFD}
 	EndGlobalSection
 EndGlobal

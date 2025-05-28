@@ -1,33 +1,51 @@
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Concurrent;
 
 namespace DeliveryApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    [Route("api/[controller]")]
+    public class DeliveryController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
+        private static readonly ConcurrentDictionary<Guid, Package> Packages = new();
+        private static readonly string[] Statuses = { "Fogadott", "Kiszállítás alatt", "Kiszállítva" };
+        private static readonly Random Random = new();
 
-        private readonly ILogger<WeatherForecastController> _logger;
-
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        [HttpPost("receive")]
+        public IActionResult ReceivePackage([FromBody] Package package)
         {
-            _logger = logger;
-        }
-
-        [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
-        {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            if (Random.NextDouble() < 0.5)
             {
-                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+                return BadRequest(new { error = "Hiba történt" });
+            }
+
+            package.Id = Guid.NewGuid();
+            Packages[package.Id] = package;
+            return Ok(package);
         }
+
+        [HttpGet("status/{id}")]
+        public IActionResult GetStatus(Guid id)
+        {
+            if (!Packages.ContainsKey(id))
+                return NotFound(new { error = "Csomag nem található" });
+
+            var status = Statuses[Random.Next(Statuses.Length)];
+            return Ok(status);
+        }
+        [HttpGet("packages")]
+        public IActionResult GetPackages()
+        {
+            return Ok(Packages.Values.ToList());
+        }
+    }
+
+    public class Package
+    {
+        public Guid Id { get; set; }
+        public string CustomerName { get; set; }
+        public string Address { get; set; }
+        public string ZipCode { get; set; }
     }
 }
